@@ -1,0 +1,70 @@
+import { BrowserModule } from '@angular/platform-browser';
+import { NgModule, ErrorHandler } from '@angular/core';
+import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
+import {SplashScreen} from '@ionic-native/splash-screen';
+import {StatusBar} from '@ionic-native/status-bar';
+
+import { MyApp } from './app.component';
+import {HomePage} from '../pages/home/home';
+
+[%
+	//imprimir pages
+	var entities = mp!Root.all.at(0).entidad;
+	var lowerName:String := "";
+	for(enti in entities) 
+	{ 
+	lowerName = enti.name.toLowerCase(); 
+ %]
+//[%=enti.name%]
+import { [%=enti.name%]ListPage } from '../pages/[%=lowerName%]/list/[%=lowerName%].list';
+import { [%=enti.name%]EditPage } from '../pages/[%=lowerName%]/edit/[%=lowerName%].edit';
+import { [%=enti.name%]AddPage } from '../pages/[%=lowerName%]/add/[%=lowerName%].add';
+import { [%=enti.name%]Service } from '../services/[%=lowerName%]-service';
+
+ [% }%]
+@NgModule({
+  declarations: [
+    MyApp,
+    HomePage,
+[%
+	for(enti in entities) 
+	{
+%]
+	[%=enti.name%]ListPage,
+	[%=enti.name%]EditPage,
+	[%=enti.name%]AddPage,
+[%	}
+%]
+  ],
+  imports: [
+    BrowserModule,
+    IonicModule.forRoot(MyApp),
+  ],
+  bootstrap: [IonicApp],
+  entryComponents: [
+    MyApp,
+    HomePage,
+[%
+	for(enti in entities) 
+	{
+%]
+	[%=enti.name%]ListPage,
+	[%=enti.name%]EditPage,
+	[%=enti.name%]AddPage,
+[%	}
+%]
+  ],
+  providers: [
+    StatusBar,
+    SplashScreen,
+    {provide: ErrorHandler, useClass: IonicErrorHandler},
+[%
+	for(enti in entities) 
+	{
+%]
+	[%=enti.name%]Service,
+[%	}
+%]
+  ]
+})
+export class AppModule {}

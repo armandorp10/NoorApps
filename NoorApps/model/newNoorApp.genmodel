@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/NoorApps/src" modelPluginID="NoorApps" modelName="NewNoorApp"
+    rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container" importerID="org.eclipse.emf.importer.ecore"
+    complianceLevel="8.0" copyrightFields="false" operationReflection="true" importOrganizing="true">
+  <foreignModel>noorApps.ecore</foreignModel>
+  <genPackages prefix="NoorApps" disposableProviderFactory="true" ecorePackage="noorApps.ecore#/">
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="noorApps.ecore#//TipoDato">
+      <genEnumLiterals ecoreEnumLiteral="noorApps.ecore#//TipoDato/boleano"/>
+      <genEnumLiterals ecoreEnumLiteral="noorApps.ecore#//TipoDato/cadena"/>
+      <genEnumLiterals ecoreEnumLiteral="noorApps.ecore#//TipoDato/numero"/>
+      <genEnumLiterals ecoreEnumLiteral="noorApps.ecore#//TipoDato/fecha"/>
+    </genEnums>
+    <genClasses ecoreClass="noorApps.ecore#//Entidad">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute noorApps.ecore#//Entidad/titulo"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference noorApps.ecore#//Entidad/atributo"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute noorApps.ecore#//Entidad/descripcion"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference noorApps.ecore#//Entidad/detalles"/>
+    </genClasses>
+    <genClasses ecoreClass="noorApps.ecore#//Atributo">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute noorApps.ecore#//Atributo/nombre"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute noorApps.ecore#//Atributo/tipo"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute noorApps.ecore#//Atributo/esVisible"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute noorApps.ecore#//Atributo/esEditable"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute noorApps.ecore#//Atributo/esRequerido"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute noorApps.ecore#//Atributo/esTitulo"/>
+    </genClasses>
+    <genClasses ecoreClass="noorApps.ecore#//Root">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference noorApps.ecore#//Root/entidad"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute noorApps.ecore#//Root/nombre"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute noorApps.ecore#//Root/navBarColorHex"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute noorApps.ecore#//Root/textColor"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute noorApps.ecore#//Root/floatingButtonColor"/>
+    </genClasses>
+    <genClasses ecoreClass="noorApps.ecore#//Detalle">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute noorApps.ecore#//Detalle/esFuerte"/>
+    </genClasses>
+  </genPackages>
+</genmodel:GenModel>

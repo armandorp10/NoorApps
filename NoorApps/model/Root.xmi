@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<noorApps:Root xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:noorApps="http://www.example.org/noorApps">
+  <entidad name="Estudiante" detalles="//@detalles.0 //@detalles.1">
+    <atributo nombre="nombre" esRequerido="true" esTitulo="true"/>
+    <atributo nombre="apellido" esVisible="true"/>
+  </entidad>
+  <entidad name="Profesor"/>
+  <entidad name="Direccion"/>
+  <entidad name="Curso"/>
+  <entidad name="Estudiante"/>
+  <detalles esFuerte="true" entidad="//@entidad.2" name="Direccion"/>
+  <detalles entidad="//@entidad.3" name="Curso"/>
+</noorApps:Root>

@@ -1,0 +1,6 @@
+import '../common/atributo-item'
+import {AtributoItemModel,AtributoItemInterface} from '../common/atributo-item';
+import {AtributoItemStringModel} from '../common/atributo-item-string';
+import {AtributoItemNumberModel} from '../common/atributo-item-number';
+import {AtributoItemBooleanModel} from '../common/atributo-item-boolean';
+import {AtributoItemDateModel} from '../common/atributo-item-date';

@@ -1,0 +1,60 @@
+
+System.out.print("Una entity con relacion detalle/fuerte, no puede ser maestro de otra relacion: ");
+EntityRelacionFuerte().println();
+
+System.out.print("Una entity con relacion detalle/fuerte, estos detalles no puede ser de otra relacion: ");
+DetalleRelacionFuerte().println();
+
+System.out.print("No pueden repetirse los nombres de Entities: ");
+noMismoNombre().println();
+
+System.out.print("No pueden repetirse los nombres de atributos para la entidad: ");
+noMismoNombreAtributo().println();
+
+System.out.print("Debe haber estrictamente un atributo marcado como 'es titulo' para la entidad: ");
+unTituloAtributo().println();
+
+System.out.print("El atributo marcado como 'es titulo' debe ser marcado como 'es requerido' para la entidad: ");
+unTituloAtributoYRequerido().println();
+
+System.out.print("Debe haber al menos un atributo marcado como 'es visible' en lista y no debe ser el mismo marcado como 'es titulo': ");
+esVisibleNoTitulo().println();
+
+operation EntityRelacionFuerte(): Boolean {
+	return Entidad.allInstances.forAll(e | e.detalles.select(d| d.esFuerte = true).Size()<=1);
+}
+
+operation DetalleRelacionFuerte(): Boolean {
+   var e:Sequence = 
+   Entidad.allInstances.select(e| e.detalles.exists(ex| ex.esFuerte=true))
+   		   .collect(e| e.detalles.name)
+   		   .flatten();
+   		   
+   return e.forAll(t1| e.select(t2| t2 = t1).Size()=1);
+}
+
+
+operation noMismoNombre():Boolean{
+	var e:Sequence = Entidad.allInstances.name;
+    return e.forAll(t1| e.select(t2| t2 = t1).Size()=1);
+}
+
+operation noMismoNombreAtributo():Boolean{
+	var entidades:Sequence = Entidad.allInstances.select(e| e.atributo.notEmpty());
+	return entidades.forAll(e| e.atributo.forAll(a| Atributo.allInstances.nombre.count(a.nombre) <= 1));
+}
+
+operation unTituloAtributo():Boolean{
+	var entidades:Sequence = Entidad.allInstances.select(e| e.atributo.notEmpty()).asSequence();
+	return entidades.forAll(e| e.atributo.select(a| a.esTitulo=true).Size()=1);
+}
+
+operation unTituloAtributoYRequerido(): Boolean {
+   var entidades:Sequence = Entidad.allInstances.select(e| e.atributo.notEmpty()).asSequence();
+   return entidades.forAll(e| e.atributo.forAll(a| a.esTitulo = true implies a.esRequerido = true));
+}
+
+operation esVisibleNoTitulo():Boolean{
+	var entidades:Sequence = Entidad.allInstances.select(e| e.atributo.notEmpty()).asSequence();
+	return entidades.forAll(e| e.atributo.select(a| a.esTitulo=false and a.esVisible = true).Size()>=1);
+}

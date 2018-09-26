@@ -1,0 +1,20 @@
+[% 
+	var root : mp!Root:= mp!Root.all.at(0); 
+	
+	// make config
+	TemplateFactory.setOutputRoot("generated/ionicApp");
+	var tPom:Template:= TemplateFactory.load('createConfig.egl');
+	tPom.generate('config.xml');
+	
+	// make app.module
+	var appModule:Template:= TemplateFactory.load('createAppModule.egl');
+	appModule.generate('./src/app/app.module.ts');
+	
+	// make models 
+	for(m in root.entidad) {
+		var tModel:Template:= TemplateFactory.load('model.egl');
+		tSrc.populate('model', m);
+		tSrc.generate('./src/model/' + t.name.toLowerCase() + '.ts');
+	}
+	
+%]
