@@ -13,8 +13,8 @@
 	// make models 
 	for(m in root.entidad) {
 		var tModel:Template:= TemplateFactory.load('model.egl');
-		tSrc.populate('model', m);
-		tSrc.generate('./src/model/' + t.name.toLowerCase() + '.ts');
+		tModel.populate('mod', m);
+		tModel.generate('./src/model/' + m.name.toLowerCase() + '.ts');
 	}
 	
 %]

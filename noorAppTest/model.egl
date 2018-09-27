@@ -4,3 +4,33 @@ import {AtributoItemStringModel} from '../common/atributo-item-string';
 import {AtributoItemNumberModel} from '../common/atributo-item-number';
 import {AtributoItemBooleanModel} from '../common/atributo-item-boolean';
 import {AtributoItemDateModel} from '../common/atributo-item-date';
+
+export interface [%=mod.name%]ModelDelegate {
+	add[%=mod.name%]: ([%=mod.name.toLowerCase()%]:[%=mod.name%]Model)=>void;
+	remove[%=mod.name%]: ([%=mod.name.toLowerCase()%]:[%=mod.name%]Model)=>void;
+}
+
+export class [%=mod.name%]Model {
+
+	public fields: AtributoItemModel[]
+	
+	constructor(){
+		this.fields = [];
+		[%for(atrib in mod.atributo)
+		{
+		var params = "\""+atrib.nombre+"\""+","+atrib.esTitulo+","+atrib.esVisible+","+atrib.esRequerido+","+atrib.esEditable+",\"\""; 
+		%]
+		this.fields.push(new AtributoItemStringMode([%=params%]));
+		[%}%]
+	}
+	
+	public getTitleField():AtributoItemModel{
+		for(let f of this.fields){
+			if(f.isTitle){
+				return f;
+			}
+		}
+		return null;
+	}
+
+}
