@@ -1,0 +1,84 @@
+[%
+	var isStrong:Boolean = true; 
+	var detalle = mp!Detalle.all.select(d| d.entidad.name = mod.name);
+	if(detalle.notEmpty())
+		isStrong = detalle.first().esFuerte;
+%]
+import { Component } from '@angular/core';
+import { NavController,NavParams } from 'ionic-angular';
+import {[%=mod.name%]Model} from '../../../model/[%=mod.name.toLowerCase()%]/[%=mod.name.toLowerCase()%]'
+[%if(isStrong){%]
+[% for(d in mod.detalles){ %]
+import { [%=d.entidad.name%]ModelDelegate, [%=d.entidad.name%]Model } from '../../../model/[%=d.entidad.name.toLowerCase()%]/[%=d.entidad.name.toLowerCase()%]';
+import { [%=d.entidad.name%]EditPage } from '../../[%=d.entidad.name.toLowerCase()%]/edit/[%=d.entidad.name.toLowerCase()%].edit';
+[%if(d.esFuerte){%]
+import { [%=d.entidad.name%]AddPage } from '../../[%=d.entidad.name.toLowerCase()%]/add/[%=d.entidad.name.toLowerCase()%].add';
+[%}
+else{%]
+import { [%=d.entidad.name%]ListPage } from '../../[%=d.entidad.name.toLowerCase()%]/list/[%=d.entidad.name.toLowerCase()%].list';
+[%}%]
+[%}%]
+[%}%]
+
+
+@Component({
+  selector: 'page-[%=mod.name.toLowerCase()%]-edit',
+  templateUrl: '[%=mod.name.toLowerCase()%].edit.html'
+})
+export class [%=mod.name%]EditPage [%
+var detallesEntidad = mod.detalles;
+if(detallesEntidad.notEmpty()){
+var cadena:String:= "";
+var index:Integer := 0;
+for(de in mod.detalles){
+	if(index > 0){
+		cadena += ","+de.entidad.name+"ModelDelegate";
+	}
+	index++;
+}
+%]implements [%=detallesEntidad.at(0).entidad.name%]ModelDelegate[%=cadena%]{
+[%}
+else{%]{[%}%]
+
+  [%=mod.name.toLowerCase()%] = new [%=mod.name%]Model();
+
+  
+  constructor(public navCtrl: NavController, public navParams: NavParams) {
+    this.[%=mod.name.toLowerCase()%] =  navParams.get("data");
+  }
+
+[%if(isStrong){%]
+[% for(d in detallesEntidad){ 
+	var pluralEntity:String = d.entidad.name ;
+	if(d.entidad.name.toLowerCase() == "direccion")
+		pluralEntity += "es";
+	else
+		pluralEntity += "s";
+%]
+  toggleSection[%=pluralEntity%]() {
+    this.[%=mod.name.toLowerCase()%].[%=pluralEntity.toLowerCase()%]Open = !this.[%=mod.name.toLowerCase()%].[%=pluralEntity.toLowerCase()%]Open;
+  }
+  
+  pressAdd[%=d.entidad.name%](){
+    this.navCtrl.push([%=d.entidad.name%][%if(d.esFuerte){%]AddPage[%}else{%]ListPage[%}%],{
+      delegate: this
+    });
+  }
+  
+  public add[%=d.entidad.name%]([%=d.entidad.name.toLowerCase()%]:[%=d.entidad.name%]Model):void{
+    this.[%=mod.name.toLowerCase()%].add[%=d.entidad.name%]([%=d.entidad.name.toLowerCase()%])
+  }
+  public remove[%=d.entidad.name%]([%=d.entidad.name.toLowerCase()%]:[%=d.entidad.name%]Model):void{
+    this.[%=mod.name.toLowerCase()%].remove[%=d.entidad.name%]([%=d.entidad.name.toLowerCase()%])
+  }
+
+  itemSelected[%=d.entidad.name%]([%=d.entidad.name.toLowerCase()%]){
+    this.navCtrl.push([%=d.entidad.name%]EditPage, {
+      data: [%=d.entidad.name.toLowerCase()%]
+    });
+  }
+
+[%}%]
+[%}%]
+
+}
