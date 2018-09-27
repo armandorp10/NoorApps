@@ -14,7 +14,32 @@
 	for(m in root.entidad) {
 		var tModel:Template:= TemplateFactory.load('model.egl');
 		tModel.populate('mod', m);
-		tModel.generate('./src/model/' + m.name.toLowerCase() + '.ts');
+		tModel.generate('./src/model/'+m.name.toLowerCase() + '/' + m.name.toLowerCase() + '.ts');
+		var tListCtrl:Template:=  TemplateFactory.load('listCtrl.egl');
+		tListCtrl.populate('mod', m);
+		tListCtrl.generate('./src/pages/'+m.name.toLowerCase()+'/list/' + m.name.toLowerCase() + '.list.ts');
+		var tListHTML:Template:=  TemplateFactory.load('listHTML.egl');
+		tListHTML.populate('mod', m);
+		tListHTML.generate('./src/pages/'+m.name.toLowerCase()+'/list/' + m.name.toLowerCase() + '.list.html');
+	}
+	
+	// make common 
+	for(c in mp!Atributo.all.tipo.asSet()) {
+		
+		var type:String := "";
+		if (c == mp!TipoDato#cadena)
+			type = "String";
+		else if(c == mp!TipoDato#numero)
+			type = "Number";
+		else if (c == mp!TipoDato#boleano)
+			type = "Boolean";
+		else 
+			type = "Date";
+		
+		var tCommon:Template:= TemplateFactory.load('common.egl');
+		tCommon.populate('co', type.asString());
+		//type.println();
+		tCommon.generate('./src/model/common/atributo-item-' + type.toLowerCase() + '.ts');
 	}
 	
 %]

@@ -1,0 +1,59 @@
+[%
+	var isStrong:Boolean = true; 
+	var detalle = mp!Detalle.all.select(d| d.entidad.name = mod.name);
+	if(detalle.notEmpty())
+		isStrong = detalle.first().esFuerte;
+%]
+import { Component } from '@angular/core';
+import { NavController, NavParams } from 'ionic-angular';
+import { [%=mod.name%]Service } from '../../../services/[%=mod.name.toLowerCase()%]-service';
+import { [%=mod.name%]EditPage } from '../edit/[%=mod.name.toLowerCase()%].edit';
+import { [%=mod.name%]AddPage } from '../add/curso.add';
+import { [%=mod.name%]Model, [%=mod.name%]ModelDelegate } from '../../../model/[%=mod.name.toLowerCase()%]/[%=mod.name.toLowerCase()%]'
+
+@Component({
+	selector:'page-[%=mod.name.toLowerCase()%]-list',
+	templateUrl: '[%=mod.name.toLowerCase()%].list.html'
+})
+export class [%=mod.name%] implements [%=mod.name%]ModelDelegate{	
+	
+	[%			
+		if(not isStrong) {%]
+	 public delegate:[%=mod.name%]ModelDelegate;
+	[%}%]
+	 
+	 constructor(public navCtrl: NavController, private model:CursoService, public navParams: NavParams){
+	 	[%if(not isStrong) {%]
+	 	this.delegate = navParams.get("delegate");
+	 	[%}%]
+	 }
+	 
+	 itemSelected(item){
+	 	
+	 	this.navCtrl.push([%=mod.name%]EditPage,{
+	 		data : item
+	 	});
+	 }
+	 [%if(not isStrong) {%]
+	 itemSelectedToMaster(item){
+	 	
+	 	this.delegate.add[%=mod.name%](item);
+	 	this.navCtrl.pop();
+	 }
+	 [%}%]
+	 
+	 pressAdd[%=mod.name%]() {
+	 	this.navCtrl.push([%=mod.name%]AddPage,{
+	 		delegate: this
+	 	});
+	 }
+
+	 public add[%=mod.name%]([%=mod.name.toLowerCase()%]:[%=mod.name%]Model):void{
+	 	this.model.add([%=mod.name.toLowerCase()%]);
+	 }
+	 
+	 public remove[%=mod.name%]([%=mod.name.toLowerCase()%]:[%=mod.name%]Model):void{
+	 	this.model.remove([%=mod.name.toLowerCase()%]);
+	 }
+	 
+}

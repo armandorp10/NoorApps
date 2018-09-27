@@ -1,0 +1,47 @@
+[%
+	var title:String = "";
+	if( "profesor"==mod.name.toLowerCase())
+		title = mod.name + "es";
+	else
+		title = mod.name + "s";
+		
+
+	var isStrong:Boolean = true; 
+	var detalle = mp!Detalle.all.select(d| d.entidad.name = mod.name);
+	if(detalle.notEmpty())
+		isStrong = detalle.first().esFuerte;
+
+%]
+<ion-header>
+  <ion-navbar>
+    <ion-title>
+     [%=title%]
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  
+  <ion-list> 
+    <ion-item-sliding *ngFor="let [%=mod.name.toLowerCase()%] of model.[%=title.toLowerCase()%]">
+      <ion-item>
+          <div *ngFor="let field of [%=mod.name.toLowerCase()%].fields">
+              <div *ngIf="field.isTitle"><b>{{ field.value }}</b><br></div>
+              <div *ngIf="field.isVisibleInList&&!field.isTitle">{{ field.value }}<br></div>
+          </div>
+          
+      </ion-item>
+      <ion-item-options>
+        <button [%if(not isStrong){%]*ngIf="delegate"[%}%] ion-button color="primary" (click)="itemSelected([%=mod.name.toLowerCase()%])"><ion-icon name="create"></ion-icon></button>
+        <button [%if(not isStrong){%]*ngIf="delegate"[%}%] ion-button color="danger" (click)="remove[%=mod.name%]([%=mod.name.toLowerCase()%])"><ion-icon name="trash"></ion-icon></button>
+  		[%if(not isStrong){%]
+  		<button *ngIf="delegate" ion-button color="primary" (click)="itemSelectedToMaster([%=mod.name.toLowerCase()%])"><ion-icon name="add"></ion-icon></button>
+  		[%}%]
+      
+      </ion-item-options>
+    </ion-item-sliding>
+  </ion-list>
+  <ion-fab bottom right [%if(not isStrong){%]*ngIf="delegate"[%}%] >
+    <button ion-fab (click)="pressAdd[%=mod.name%]()"><ion-icon name="add"></ion-icon></button>
+  </ion-fab>
+</ion-content>
