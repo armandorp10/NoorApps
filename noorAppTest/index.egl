@@ -27,6 +27,10 @@
 		//m.println();
 		tEditCtrl.populate('mod', m);
 		tEditCtrl.generate('./src/pages/'+m.name.toLowerCase()+'/edit/' + m.name.toLowerCase() + '.edit.ts');
+		var tEditHTML:Template:=  TemplateFactory.load('editHTML.egl');
+		//m.println();
+		tEditHTML.populate('mod', m);
+		tEditHTML.generate('./src/pages/'+m.name.toLowerCase()+'/edit/' + m.name.toLowerCase() + '.edit.html');
 	}
 	
 	// make common 
