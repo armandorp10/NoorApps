@@ -1,0 +1,68 @@
+[%
+	var isStrong:Boolean = true; 
+	var detalle = mp!Detalle.all.select(d| d.entidad.name = mod.name);
+	if(detalle.notEmpty())
+		isStrong = detalle.first().esFuerte;
+%]
+import { Component } from '@angular/core';
+import { NavController ,ToastController, NavParams} from 'ionic-angular';
+import {AtributoItemInterface} from '../../../model/common/atributo-item'
+import {AtributoItemBooleanModel} from '../../../model/common/atributo-item-boolean'
+import {AtributoItemStringModel} from '../../../model/common/atributo-item-string'
+import {AtributoItemDateModel} from '../../../model/common/atributo-item-date'
+import {AtributoItemNumberModel} from '../../../model/common/atributo-item-number'
+import {[%=mod.name%]Model, [%=mod.name%]ModelDelegate} from '../../../model/[%=mod.name.toLowerCase()%]/[%=mod.name.toLowerCase()%]'
+[%if(isStrong){%]
+import {[%=mod.name%]Service} from '../../../services/[%=mod.name.toLowerCase()%]-service'
+[%}%]
+
+@Component({
+  selector: 'page-[%=mod.name.toLowerCase()%]-add',
+  templateUrl: '[%=mod.name.toLowerCase()%].add.html'
+})
+export class [%=mod.name%]AddPage {
+
+  [%=mod.name.toLowerCase()%] = new [%=mod.name%]Model();
+ 
+  public delegate:[%=mod.name%]ModelDelegate;
+
+  constructor(private toastCtrl: ToastController,public navCtrl: NavController, public navParams: NavParams[%if(isStrong){%],private model:[%=mod.name%]Service[%}%]) {
+    this.delegate =  navParams.get("delegate");
+  }
+  
+  guardar(){
+    if(this.validar()){
+      this.delegate.add[%=mod.name%](this.[%=mod.name.toLowerCase()%])
+      this.navCtrl.pop();
+    }
+    else{
+      this.presentToast();
+    }
+    
+  }
+  validar():Boolean{
+    var resp = true;
+    for(let f of this.[%=mod.name.toLowerCase()%].fields){
+      
+      if(f.isMandatory && ( f instanceof AtributoItemStringModel || f instanceof AtributoItemDateModel  ) ){
+
+        if(f.getValue().trim() === ""){
+          resp= false;
+        }
+        
+      }
+    }
+
+    return resp;
+  }
+
+  presentToast() {
+    let toast = this.toastCtrl.create({
+      message: 'Debe completar todos los datos requeridos para [%=mod.name%]',
+      duration: 3000,
+      position: 'bottom'
+    });
+  
+    toast.present();
+  }
+}

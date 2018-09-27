@@ -4,6 +4,9 @@ import {AtributoItemStringModel} from '../common/atributo-item-string';
 import {AtributoItemNumberModel} from '../common/atributo-item-number';
 import {AtributoItemBooleanModel} from '../common/atributo-item-boolean';
 import {AtributoItemDateModel} from '../common/atributo-item-date';
+[%for(d in mod.detalles){%]
+import { [%=d.entidad.name%]Model, [%=d.entidad.name%]ModelDelegate } from '../[%=d.entidad.name.toLowerCase()%]/[%=d.entidad.name.toLowerCase()%]';
+[%}%]
 
 export interface [%=mod.name%]ModelDelegate {
 	add[%=mod.name%]: ([%=mod.name.toLowerCase()%]:[%=mod.name%]Model)=>void;
@@ -12,15 +15,32 @@ export interface [%=mod.name%]ModelDelegate {
 
 export class [%=mod.name%]Model {
 
-	public fields: AtributoItemModel[]
+	public fields: AtributoItemModel[];
+[%for(d in mod.detalles){%]
+    //[%=d.entidad.name%]
+    public [%=d.getPlural().toLowerCase()%]:[%=d.entidad.name%]Model[] = [];
+    public [%=d.getPlural().toLowerCase()%]Open:Boolean = false;
+[%}%]
 	
 	constructor(){
 		this.fields = [];
 		[%for(atrib in mod.atributo)
 		{
-		var params = "\""+atrib.nombre+"\""+","+atrib.esTitulo+","+atrib.esVisible+","+atrib.esRequerido+","+atrib.esEditable+",\"\""; 
+		var dataType = atrib.getDataType();
+		var lastParam:String;
+		if(dataType =="String" )
+			lastParam = "\"\"";
+		else if(dataType=="Boolean")
+			lastParam = "true"; 
+		else if(dataType == "Number") 
+			lastParam = "0";
+		else
+			lastParam = "new Date()";
+		
+		var params = "\""+atrib.nombre+"\""+","+atrib.esTitulo+","+atrib.esVisible+","+atrib.esRequerido+","
+			+atrib.esEditable+","+lastParam; 
 		%]
-		this.fields.push(new AtributoItemStringMode([%=params%]));
+		this.fields.push(new AtributoItem[%=dataType%]Model([%=params%]));
 		[%}%]
 	}
 	
@@ -32,5 +52,41 @@ export class [%=mod.name%]Model {
 		}
 		return null;
 	}
+	
+[% for(d in mod.detalles){%]
+    public add[%=d.entidad.name%]([%=d.entidad.name.toLowerCase()%]:[%=d.entidad.name%]Model){
+        this.[%=d.getPlural().toLowerCase()%].push([%=d.entidad.name.toLowerCase()%]) 
+     }
+ 
+     public remove[%=d.entidad.name%]([%=d.entidad.name.toLowerCase()%]:[%=d.entidad.name%]Model){
+         for(var i = 0; i < this.[%=d.getPlural().toLowerCase()%].length; i++) {
+             if(this.[%=d.getPlural().toLowerCase()%][i] == [%=d.entidad.name.toLowerCase()%]){
+                 this.[%=d.getPlural().toLowerCase()%].splice(i, 1);
+             }
+         }
+      }
 
+[%}%]
 }
+[%
+	operation mp!Detalle getPlural(){
+		var pluralEntity:String = self.entidad.name ;
+		if(self.entidad.name.toLowerCase() == "direccion" or self.entidad.name.toLowerCase() == "profesor")
+			pluralEntity += "es";
+		else
+			pluralEntity += "s";
+		return pluralEntity;
+	}
+	operation mp!Atributo getDataType(){
+		var type:String = "";
+		if (self.tipo = mp!TipoDato#cadena)
+			type="String";
+		else if (self.tipo = mp!TipoDato#fecha)
+			type = "Date";
+		else if (self.tipo = mp!TipoDato#numero)
+			type = "Number";
+		else if(self.tipo = mp!TipoDato#boleano)
+			type ="Boolean";
+		return type;
+	}
+%]

@@ -13,24 +13,35 @@
 	//root.entidad.at(0).println();
 	// make models 
 	for(m in root.entidad) {
+		// Models
 		var tModel:Template:= TemplateFactory.load('model.egl');
 		tModel.populate('mod', m);
 		tModel.generate('./src/model/'+m.name.toLowerCase() + '/' + m.name.toLowerCase() + '.ts');
+		// pages/list
 		var tListCtrl:Template:=  TemplateFactory.load('listCtrl.egl');
 		tListCtrl.populate('mod', m);
 		tListCtrl.generate('./src/pages/'+m.name.toLowerCase()+'/list/' + m.name.toLowerCase() + '.list.ts');
 		var tListHTML:Template:=  TemplateFactory.load('listHTML.egl');
 		tListHTML.populate('mod', m);
 		tListHTML.generate('./src/pages/'+m.name.toLowerCase()+'/list/' + m.name.toLowerCase() + '.list.html');
-		
+		// pages/edit
 		var tEditCtrl:Template:=  TemplateFactory.load('editCtrl.egl');
-		//m.println();
 		tEditCtrl.populate('mod', m);
 		tEditCtrl.generate('./src/pages/'+m.name.toLowerCase()+'/edit/' + m.name.toLowerCase() + '.edit.ts');
 		var tEditHTML:Template:=  TemplateFactory.load('editHTML.egl');
-		//m.println();
 		tEditHTML.populate('mod', m);
 		tEditHTML.generate('./src/pages/'+m.name.toLowerCase()+'/edit/' + m.name.toLowerCase() + '.edit.html');
+		// pages/add
+		var tAddCtrl:Template:=  TemplateFactory.load('addCtrl.egl');
+		tAddCtrl.populate('mod', m);
+		tAddCtrl.generate('./src/pages/'+m.name.toLowerCase()+'/add/' + m.name.toLowerCase() + '.add.ts');
+		var tAddHTML:Template:=  TemplateFactory.load('addHTML.egl');
+		tAddHTML.populate('mod', m);
+		tAddHTML.generate('./src/pages/'+m.name.toLowerCase()+'/add/' + m.name.toLowerCase() + '.add.html');
+		// service
+		var tService:Template:=  TemplateFactory.load('service.egl');
+		tService.populate('mod', m);
+		tService.generate('./src/services/'+m.name.toLowerCase()+'-service.ts');
 	}
 	
 	// make common 

@@ -1,0 +1,29 @@
+import { Injectable } from '@angular/core';
+import { [%=mod.name%]Model } from '../model/[%=mod.name.toLowerCase()%]/[%=mod.name.toLowerCase()%]';
+
+@Injectable()
+export class [%=mod.name%]Service {
+[%
+	var pluralEntity:String = mod.name ;
+	if(mod.name.toLowerCase() == "direccion" or mod.name.toLowerCase() == "profesor")
+		pluralEntity += "es";
+	else
+		pluralEntity += "s";
+%]
+  [%=pluralEntity.toLowerCase()%] : [%=mod.name%]Model[];
+  constructor() {
+    this.[%=pluralEntity.toLowerCase()%] = []; 
+  }
+
+  add([%=mod.name.toLowerCase()%]:[%=mod.name%]Model){
+    this.[%=pluralEntity.toLowerCase()%].push([%=mod.name.toLowerCase()%]);
+  }
+
+  remove([%=mod.name.toLowerCase()%]:[%=mod.name%]Model){
+    for(var i = 0; i < this.[%=pluralEntity.toLowerCase()%].length; i++) {
+        if(this.[%=pluralEntity.toLowerCase()%][i] == [%=mod.name.toLowerCase()%]){
+            this.[%=pluralEntity.toLowerCase()%].splice(i, 1);
+        }
+    }
+  }
+}

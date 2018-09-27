@@ -43,7 +43,7 @@ for(d in detallesEntidad){
 
     <ion-list *ngIf="[%=mod.name.toLowerCase()%].[%=pluralEntity.toLowerCase()%]Open" no-lines>
       <!-- Second Level -->
-      <ion-item-sliding *ngFor="let [%=d.entidad.name%] of [%=mod.name.toLowerCase()%].[%=pluralEntity.toLowerCase()%];">
+      <ion-item-sliding *ngFor="let [%=d.entidad.name.toLowerCase()%] of [%=mod.name.toLowerCase()%].[%=pluralEntity.toLowerCase()%];">
           <ion-item>
               <div *ngFor="let field of [%=d.entidad.name.toLowerCase()%].fields">
                   <div *ngIf="field.isTitle"><b>{{ field.value }}</b><br></div>

@@ -32,8 +32,8 @@
           
       </ion-item>
       <ion-item-options>
-        <button [%if(not isStrong){%]*ngIf="delegate"[%}%] ion-button color="primary" (click)="itemSelected([%=mod.name.toLowerCase()%])"><ion-icon name="create"></ion-icon></button>
-        <button [%if(not isStrong){%]*ngIf="delegate"[%}%] ion-button color="danger" (click)="remove[%=mod.name%]([%=mod.name.toLowerCase()%])"><ion-icon name="trash"></ion-icon></button>
+        <button [%if(not isStrong){%]*ngIf="!delegate"[%}%] ion-button color="primary" (click)="itemSelected([%=mod.name.toLowerCase()%])"><ion-icon name="create"></ion-icon></button>
+        <button [%if(not isStrong){%]*ngIf="!delegate"[%}%] ion-button color="danger" (click)="remove[%=mod.name%]([%=mod.name.toLowerCase()%])"><ion-icon name="trash"></ion-icon></button>
   		[%if(not isStrong){%]
   		<button *ngIf="delegate" ion-button color="primary" (click)="itemSelectedToMaster([%=mod.name.toLowerCase()%])"><ion-icon name="add"></ion-icon></button>
   		[%}%]
@@ -41,7 +41,7 @@
       </ion-item-options>
     </ion-item-sliding>
   </ion-list>
-  <ion-fab bottom right [%if(not isStrong){%]*ngIf="delegate"[%}%] >
+  <ion-fab bottom right [%if(not isStrong){%]*ngIf="!delegate"[%}%] >
     <button ion-fab (click)="pressAdd[%=mod.name%]()"><ion-icon name="add"></ion-icon></button>
   </ion-fab>
 </ion-content>
